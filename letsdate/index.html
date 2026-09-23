@@ -1,0 +1,681 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#23213A">
+<title>I'm shooting my shot</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛺</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --night:#23213A;
+    --night-2:#37335E;
+    --paper:#FFFBF6;
+    --ink:#221F36;
+    --muted:#6D6883;
+    --rose:#D0506F;
+    --taxi:#F4C430;
+    --auto:#3E8E62;
+    --line:#ECE3DA;
+    --display:"Instrument Serif", Georgia, "Times New Roman", serif;
+    --body:"Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
+    box-sizing:border-box;
+    padding-top:env(safe-area-inset-top,0px);
+    padding-bottom:env(safe-area-inset-bottom,0px);
+  }
+  *,*::before,*::after{box-sizing:inherit}
+  html,body{margin:0;min-height:100%}
+  body{
+    font-family:var(--body);color:var(--ink);
+    background:
+      radial-gradient(circle at 20% 30%, rgba(255,246,230,.35) 0 1px, transparent 1.5px) 0 0/48px 48px,
+      radial-gradient(circle at 60% 70%, rgba(255,246,230,.2) 0 1px, transparent 1.5px) 0 0/31px 31px,
+      linear-gradient(180deg, var(--night) 0%, var(--night-2) 100%);
+    background-color:var(--night);
+    display:flex;align-items:center;justify-content:center;
+    padding:22px 14px;min-height:100vh;
+  }
+  button{font:inherit;color:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
+  :focus-visible{outline:3px solid var(--taxi);outline-offset:3px;border-radius:10px}
+
+  .card{
+    position:relative;width:100%;max-width:560px;background:var(--paper);
+    border-radius:26px;padding:30px 26px 34px;
+    box-shadow:0 40px 80px -30px rgba(0,0,0,.7);overflow:hidden;
+  }
+
+  /* Hero scene, full bleed at the top of the card */
+  .hero{margin:-30px -26px 22px;position:relative}
+  .scene{display:block;width:100%;height:auto}
+  .caption{
+    position:absolute;left:0;right:0;bottom:6px;text-align:center;
+    font-family:var(--display);font-style:italic;font-size:.95rem;color:#F7E2C2;opacity:.85;
+  }
+  .scene .taxi{animation:driveL 1.4s cubic-bezier(.2,.8,.2,1) both}
+  .scene .auto{animation:driveR 1.4s cubic-bezier(.2,.8,.2,1) both}
+  .scene .heart{transform-box:fill-box;transform-origin:center;animation:pop .5s 1.2s cubic-bezier(.3,1.6,.5,1) both}
+  .scene .sunglow{transform-box:fill-box;transform-origin:center;animation:glow 4s ease-in-out infinite alternate}
+  @keyframes driveL{from{transform:translateX(-340px)}to{transform:none}}
+  @keyframes driveR{from{transform:translateX(340px)}to{transform:none}}
+  @keyframes pop{from{transform:scale(0)}to{transform:scale(1)}}
+  @keyframes glow{from{opacity:.75}to{opacity:1}}
+
+  h1,h2{font-family:var(--display);font-weight:400;line-height:1;margin:0 0 12px;letter-spacing:-.01em}
+  h1{font-size:clamp(2.6rem,10vw,3.6rem);overflow-wrap:anywhere}
+  h2{font-size:clamp(2.1rem,8vw,2.8rem)}
+  p{margin:0 0 16px;line-height:1.55;max-width:60ch}
+  .sub{color:var(--muted)}
+
+  .btn{white-space:nowrap;border:0;border-radius:999px;padding:15px 28px;font-weight:700;font-size:1.05rem;transition:transform .15s, box-shadow .15s, opacity .15s}
+  .btn-taxi{background:var(--taxi);color:var(--ink);box-shadow:0 4px 0 var(--ink)}
+  .btn-taxi:active{transform:translateY(3px);box-shadow:0 1px 0 var(--ink)}
+  .btn-ink{background:var(--ink);color:var(--paper)}
+  .btn-ink:active{transform:translateY(2px)}
+  .btn-rose{background:var(--rose);color:#fff;box-shadow:0 4px 0 #8E2D47}
+  .btn-rose:active{transform:translateY(3px);box-shadow:0 1px 0 #8E2D47}
+  .btn[disabled]{opacity:.35;cursor:not-allowed;box-shadow:none}
+  .link{background:none;border:0;padding:10px 4px;color:var(--muted);font-weight:600;text-decoration:underline;text-underline-offset:3px}
+
+  /* Question pop up */
+  .overlay{position:fixed;inset:0;background:rgba(20,18,36,.82);display:none;align-items:center;justify-content:center;padding:18px;z-index:20}
+  .overlay.open{display:flex}
+  .dialog{animation:pop .4s cubic-bezier(.3,1.5,.5,1) both;text-align:center;padding-top:36px}
+  .dialog .sub{margin:0 auto}
+  .choices{display:flex;gap:16px;justify-content:center;align-items:center;margin:24px 0 22px;min-height:70px}
+  #yesBtn{transition:transform .25s cubic-bezier(.3,1.6,.5,1);padding:16px 42px;font-size:1.2rem}
+  #noBtn{padding:14px 30px;background:#fff;border:2px solid var(--ink);z-index:60;transition:left .25s ease, top .25s ease, transform .2s}
+  .fine{font-size:.82rem;color:var(--muted);margin:0 auto;max-width:42ch}
+
+  .toast{
+    position:fixed;left:50%;top:calc(16px + env(safe-area-inset-top,0px));
+    transform:translate(-50%,calc(-100% - 60px));
+    background:var(--ink);color:var(--paper);padding:12px 18px;border-radius:14px;font-weight:600;
+    width:max-content;max-width:min(92vw,440px);text-align:center;z-index:80;
+    transition:transform .3s cubic-bezier(.3,1.4,.5,1);border-bottom:4px solid var(--taxi)
+  }
+  .toast.show{transform:translate(-50%,0)}
+
+  /* Journey track */
+  .track{list-style:none;display:flex;justify-content:space-between;padding:26px 0 0;margin:0 0 22px;position:relative}
+  .track[hidden]{display:none}
+  .track::before{content:"";position:absolute;left:14px;right:14px;top:36px;border-top:3px dotted #CFC6D8}
+  .track li{position:relative;display:flex;flex-direction:column;align-items:center;gap:6px;font-size:.8rem;font-weight:600;color:var(--muted);z-index:1}
+  .track li::before{content:"";width:22px;height:22px;border-radius:50%;background:var(--paper);border:3px solid #CFC6D8}
+  .track li.done::before{background:var(--auto);border-color:var(--auto)}
+  .track li.current{color:var(--ink)}
+  .track li.current::before{background:var(--taxi);border-color:var(--ink)}
+  .track li.current::after{content:"🛺";position:absolute;top:-28px;font-size:1.3rem}
+
+  .step{display:none}
+  .step.active{display:block}
+
+  .tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px;margin:18px 0 22px}
+  .tile{display:flex;gap:12px;align-items:flex-start;text-align:left;background:#fff;border:2px solid var(--line);border-radius:16px;padding:12px 14px;transition:border-color .15s, background .15s, transform .15s}
+  .tile:hover{border-color:#D9CBE0}
+  .tile .e{font-size:1.6rem;line-height:1}
+  .tile b{display:block;font-size:.98rem;margin-bottom:2px}
+  .tile span.d{font-size:.84rem;color:var(--muted);line-height:1.35}
+  .tile[aria-pressed="true"]{border-color:var(--rose);background:#FFF1F4;transform:scale(1.02)}
+
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 22px}
+  .chip{background:#fff;border:2px solid var(--line);border-radius:999px;padding:10px 14px;font-weight:600;font-size:.92rem}
+  .chip[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+  .q{font-weight:700;margin:6px 0 0}
+
+  label.f{display:block;font-weight:700;margin:16px 0 8px}
+  input[type=date],input[type=time],input[type=text]{
+    font:inherit;font-size:16px;padding:12px 14px;border-radius:12px;border:2px solid var(--line);
+    background:#fff;color:var(--ink);width:100%;max-width:320px;appearance:none;-webkit-appearance:none;min-height:48px
+  }
+  input:focus{border-color:var(--rose);outline:none}
+  .nav{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:22px}
+
+  /* Ticket */
+  .ticket{background:#fff;border:2px solid var(--ink);border-radius:18px;overflow:hidden;margin:18px 0 22px}
+  .ticket .head{background:var(--night);color:#F7E2C2;padding:14px 18px;display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .ticket .head strong{font-family:var(--display);font-weight:400;font-size:1.6rem;line-height:1}
+  .ticket .head small{font-weight:600;opacity:.85}
+  .ticket .body{display:grid;grid-template-columns:1fr 1fr;gap:14px 18px;padding:18px;margin:0}
+  .ticket .body div.wide{grid-column:1/-1}
+  .ticket dt{font-size:.78rem;color:var(--muted);font-weight:600;margin:0 0 2px}
+  .ticket dd{margin:0;font-weight:700;font-size:1rem;overflow-wrap:anywhere}
+  .ticket .tear{border-top:2px dashed var(--ink);position:relative}
+  .ticket .tear::before,.ticket .tear::after{content:"";position:absolute;top:-12px;width:22px;height:22px;border-radius:50%;background:var(--paper);border:2px solid var(--ink)}
+  .ticket .tear::before{left:-13px}
+  .ticket .tear::after{right:-13px}
+  .ticket .stub{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;padding:14px 18px;font-size:.88rem}
+  .ticket .stub b{font-family:var(--display);font-weight:400;font-size:1.2rem;letter-spacing:1px}
+
+  .error{background:#FDECEF;border:2px solid var(--rose);border-radius:12px;padding:12px 14px;margin:0 0 16px;font-weight:600;display:none}
+  .error.show{display:block}
+
+  .rain{position:fixed;top:-40px;font-size:1.8rem;pointer-events:none;z-index:90;animation:fall linear forwards}
+  @keyframes fall{to{transform:translateY(110vh) rotate(260deg)}}
+
+  @media (max-width:480px){
+    .card{padding:24px 16px 30px}
+    .hero{margin:-24px -16px 20px}
+    .tiles{grid-template-columns:1fr}
+    .ticket .body{grid-template-columns:1fr}
+    .track li{font-size:.72rem}
+    .nav .btn{flex:1;max-width:220px}
+  }
+  @media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}}
+</style>
+</head>
+<body>
+
+<main class="card">
+
+  <div class="hero" id="hero">
+    <svg class="scene" viewBox="0 0 600 300" role="img" aria-label="Howrah Bridge in Kolkata and Bangalore Palace in Bengaluru at sunset, with a yellow taxi and an auto meeting on the road">
+<defs>
+ <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+  <stop offset="0" stop-color="#5B5A96"/><stop offset=".45" stop-color="#C98AA6"/><stop offset=".75" stop-color="#F2A99A"/><stop offset="1" stop-color="#F9CFA0"/>
+ </linearGradient>
+ <linearGradient id="river" x1="0" y1="0" x2="0" y2="1">
+  <stop offset="0" stop-color="#E6A597"/><stop offset="1" stop-color="#6F6A9E"/>
+ </linearGradient>
+ <radialGradient id="sun" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#FFF1D2"/><stop offset=".6" stop-color="#FFD9A6" stop-opacity=".9"/><stop offset="1" stop-color="#FFD9A6" stop-opacity="0"/></radialGradient>
+</defs>
+<rect width="600" height="300" fill="url(#sky)"/>
+<g fill="#FFF6E6" opacity=".8"><circle cx="40" cy="22" r="1.2"/><circle cx="120" cy="40" r="1"/><circle cx="210" cy="18" r="1.4"/><circle cx="330" cy="30" r="1"/><circle cx="420" cy="14" r="1.3"/><circle cx="520" cy="36" r="1.1"/><circle cx="575" cy="20" r="1"/><circle cx="265" cy="52" r="0.9"/></g>
+<circle class="sunglow" cx="300" cy="182" r="70" fill="url(#sun)"/>
+<circle cx="300" cy="182" r="30" fill="#FFE9C4"/>
+<path d="M118 70 q5 -5 10 0 q5 -5 10 0 M150 56 q4 -4 8 0 q4 -4 8 0 M96 84 q4 -4 8 0 q4 -4 8 0" fill="none" stroke="#3B3761" stroke-width="1.6" stroke-linecap="round"/>
+
+<!-- Kolkata: the Hooghly and Howrah Bridge -->
+<rect x="0" y="210" width="310" height="50" fill="url(#river)"/>
+<g stroke="#FFE9D6" stroke-width="1.4" stroke-linecap="round" opacity=".55">
+ <path d="M20 226h26M70 238h34M140 228h22M190 244h30M250 232h26M40 250h20M120 252h26"/>
+</g>
+<g fill="none" stroke="#3B3761" stroke-linejoin="round">
+ <path d="M14 185.8V204 M14 185.8L25 204 M25 170.9V204 M25 204L36 155.9 M36 155.9V204 M36 155.9L47 204 M47 140.9V204 M47 204L58 125.9 M58 125.9V204 M58 125.9L69 204 M69 111.0V204 M69 204L80 96.0 M80 96.0V204 M80 96.0L91 204 M91 104.5V204 M91 204L102 113.0 M102 113.0V204 M102 113.0L113 204 M113 121.5V204 M113 204L124 129.9 M124 129.9V204 M124 129.9L135 204 M135 138.4V204 M135 204L146 146.9 M146 146.9V204 M146 146.9L157 204 M157 144.6V204 M157 204L168 136.1 M168 136.1V204 M168 136.1L179 204 M179 127.6V204 M179 204L190 119.1 M190 119.1V204 M190 119.1L201 204 M201 110.7V204 M201 204L212 102.2 M212 102.2V204 M212 102.2L223 204 M223 100.1V204 M223 204L234 115.1 M234 115.1V204 M234 115.1L245 204 M245 130.0V204 M245 204L256 145.0 M256 145.0V204 M256 145.0L267 204 M267 160.0V204 M267 204L278 174.9 M278 174.9V204 M278 174.9L289 204 M289 189.9V204" stroke-width="1.3"/>
+ <path d="M8 194 L80 96 L150 150 L220 96 L292 194" stroke-width="3.2"/>
+ <path d="M4 204H296" stroke-width="5"/>
+</g>
+<g fill="#3B3761">
+ <rect x="75" y="88" width="4" height="150"/><rect x="82" y="88" width="4" height="150"/>
+ <rect x="215" y="88" width="4" height="150"/><rect x="222" y="88" width="4" height="150"/>
+ <rect x="72" y="86" width="17" height="5" rx="1"/><rect x="212" y="86" width="17" height="5" rx="1"/>
+ <path d="M75 120l11 14M86 120l-11 14M75 150l11 14M86 150l-11 14M215 120l11 14M226 120l-11 14M215 150l11 14M226 150l-11 14" stroke="#3B3761" stroke-width="1.4"/>
+ <rect x="68" y="232" width="26" height="8" rx="2"/><rect x="208" y="232" width="26" height="8" rx="2"/>
+</g>
+
+<!-- Bengaluru: lawns, rain trees and Bangalore Palace -->
+<rect x="300" y="214" width="300" height="46" fill="#9CB98A"/>
+<g fill="#4F7F60">
+ <circle cx="332" cy="196" r="22"/><circle cx="356" cy="186" r="24"/><circle cx="344" cy="206" r="18"/>
+ <circle cx="578" cy="190" r="24"/><circle cx="556" cy="202" r="18"/>
+ <rect x="342" y="200" width="5" height="18"/><rect x="572" y="200" width="5" height="18"/>
+</g>
+<g stroke="#3B3761" stroke-width="2" stroke-linejoin="round">
+ <rect x="380" y="160" width="160" height="56" fill="#F4E4C8"/>
+ <g fill="#F4E4C8" stroke-width="1.5"><rect x="382" y="153" width="7" height="8"/><rect x="394" y="153" width="7" height="8"/><rect x="406" y="153" width="7" height="8"/><rect x="418" y="153" width="7" height="8"/><rect x="430" y="153" width="7" height="8"/><rect x="442" y="153" width="7" height="8"/><rect x="454" y="153" width="7" height="8"/><rect x="466" y="153" width="7" height="8"/><rect x="478" y="153" width="7" height="8"/><rect x="490" y="153" width="7" height="8"/><rect x="502" y="153" width="7" height="8"/><rect x="514" y="153" width="7" height="8"/><rect x="526" y="153" width="7" height="8"/></g>
+ <rect x="368" y="128" width="28" height="88" fill="#EFDDBE"/>
+ <path d="M364 128 L382 92 L400 128 Z" fill="#4A4B77"/>
+ <rect x="524" y="128" width="28" height="88" fill="#EFDDBE"/>
+ <path d="M520 128 L538 92 L556 128 Z" fill="#4A4B77"/>
+ <rect x="444" y="118" width="32" height="44" fill="#EFDDBE"/>
+ <path d="M440 118 L460 78 L480 118 Z" fill="#4A4B77"/>
+ <rect x="412" y="140" width="12" height="20" fill="#EFDDBE" stroke-width="1.5"/>
+ <path d="M410 140 L418 124 L426 140 Z" fill="#4A4B77" stroke-width="1.5"/>
+ <rect x="496" y="140" width="12" height="20" fill="#EFDDBE" stroke-width="1.5"/>
+ <path d="M494 140 L502 124 L510 140 Z" fill="#4A4B77" stroke-width="1.5"/>
+ <path d="M382 92V84M538 92V84M460 78V68" stroke-width="1.6"/>
+</g>
+<g fill="#3B3761" opacity=".75">
+ <rect x="406" y="176" width="8" height="15" rx="4"/><rect x="422" y="176" width="8" height="15" rx="4"/><rect x="438" y="176" width="8" height="15" rx="4"/><rect x="486" y="176" width="8" height="15" rx="4"/><rect x="502" y="176" width="8" height="15" rx="4"/><rect x="518" y="176" width="8" height="15" rx="4"/>
+ <rect x="376" y="146" width="8" height="15" rx="4"/><rect x="376" y="176" width="8" height="15" rx="4"/>
+ <rect x="532" y="146" width="8" height="15" rx="4"/><rect x="532" y="176" width="8" height="15" rx="4"/>
+ <rect x="455" y="130" width="10" height="18" rx="5"/>
+ <path d="M452 216V200a8 8 0 0 1 16 0V216Z"/>
+</g>
+
+<!-- Road -->
+<rect x="0" y="256" width="600" height="44" fill="#34305A"/>
+<path d="M0 279H600" stroke="#F7E2C2" stroke-width="2.5" stroke-dasharray="16 12" opacity=".7"/>
+
+<!-- Kolkata taxi -->
+<g class="taxi"><g transform="translate(196 226) scale(.58)">
+ <path d="M28 32 L40 13 H80 L92 32 Z" fill="#F4C430" stroke="#221F36" stroke-width="3" stroke-linejoin="round"/>
+ <path d="M43 17 H58 V30 H34 Z" fill="#CFE6F2"/><path d="M62 17 H77 L86 30 H62 Z" fill="#CFE6F2"/>
+ <rect x="50" y="4" width="20" height="8" rx="2" fill="#221F36"/>
+ <rect x="8" y="31" width="104" height="27" rx="9" fill="#F4C430" stroke="#221F36" stroke-width="3"/>
+ <rect x="10" y="41" width="100" height="4" fill="#221F36" opacity=".8"/>
+ <circle cx="112" cy="38" r="4" fill="#FFF3C4"/>
+ <circle cx="32" cy="60" r="9" fill="#221F36"/><circle cx="32" cy="60" r="3.5" fill="#ddd"/>
+ <circle cx="88" cy="60" r="9" fill="#221F36"/><circle cx="88" cy="60" r="3.5" fill="#ddd"/>
+</g></g>
+
+<!-- Bengaluru auto -->
+<g class="auto"><g transform="translate(330 213) scale(.56)">
+ <!-- green lower body -->
+ <path d="M28 56 H116 Q124 56 124 64 V80 Q124 86 118 86 H116 A13 13 0 0 0 90 86 H40 L34 78 H30 Q28 68 28 56 Z" fill="#3E8E62" stroke="#221F36" stroke-width="3" stroke-linejoin="round"/>
+ <!-- front apron / nose -->
+ <path d="M30 46 L20 46 Q12 56 12 70 Q12 78 20 78 L32 78 Q30 62 30 46 Z" fill="#3E8E62" stroke="#221F36" stroke-width="3" stroke-linejoin="round"/>
+ <!-- yellow belt -->
+ <path d="M20 46 H124 V58 H28 Q24 52 20 46 Z" fill="#F4C430" stroke="#221F36" stroke-width="3" stroke-linejoin="round"/>
+ <!-- cabin interior -->
+ <rect x="34" y="20" width="68" height="26" fill="#4B456E"/>
+ <!-- rear seat -->
+ <path d="M76 26 H98 V46 H70 V40 H76 Z" fill="#8B5E3C" stroke="#221F36" stroke-width="2" stroke-linejoin="round"/>
+ <!-- driver handlebar -->
+ <path d="M40 40 L48 34 M46 32 L52 36" stroke="#D8D0BD" stroke-width="2.5" stroke-linecap="round"/>
+ <!-- grab pillar -->
+ <path d="M62 18 V46" stroke="#221F36" stroke-width="3"/>
+ <!-- black hood -->
+ <path d="M22 46 L28 22 Q32 10 46 10 H108 Q124 10 124 26 V46 H102 V20 H34 L30 46 Z" fill="#221F36" stroke="#221F36" stroke-width="2" stroke-linejoin="round"/>
+ <!-- windscreen -->
+ <path d="M24 44 L29 23 Q31 17 36 17 L33 44 Z" fill="#CFE6F2"/>
+ <!-- hood stitching -->
+ <path d="M40 14 H112" stroke="#4B456E" stroke-width="1.5"/>
+ <!-- headlight and tail light -->
+ <circle cx="15" cy="58" r="4" fill="#FFF3C4" stroke="#221F36" stroke-width="1.5"/>
+ <rect x="120" y="62" width="5" height="7" rx="1.5" fill="#D0506F"/>
+ <!-- front mudguard -->
+ 
+ <!-- wheels -->
+ <circle cx="23" cy="86" r="8" fill="#221F36"/><circle cx="23" cy="86" r="3" fill="#ddd"/>
+ <path d="M11 84 A12 12 0 0 1 35 84" fill="none" stroke="#221F36" stroke-width="4" stroke-linecap="round"/>
+ <circle cx="103" cy="85" r="10" fill="#221F36"/><circle cx="103" cy="85" r="3.8" fill="#ddd"/>
+</g></g>
+
+<g class="heart"><path transform="translate(300 240)" d="M0 8 C-12 -2 -8 -14 0 -7 C8 -14 12 -2 0 8Z" fill="#D0506F" stroke="#FFF6EE" stroke-width="1.5"/></g>
+</svg>
+    <div class="caption">Kolkata ⇄ Bengaluru</div>
+  </div>
+
+  <section class="step active" data-step="intro">
+    <h1 id="hello">Okay. I'm shooting my shot.</h1>
+    <p class="sub">Built in Bengaluru traffic. Approved by Kolkata. My therapist calls this growth.</p>
+    <button class="btn btn-taxi" id="askBtn">Open it</button>
+  </section>
+
+  <ol class="track" id="track" hidden>
+    <li>Plan</li><li>Food</li><li>When</li><li>Ticket</li>
+  </ol>
+
+  <section class="step" data-step="plan">
+    <h2>Pick the plan.</h2>
+    <p class="sub">Low effort or full main character arc. Your call.</p>
+    <div class="tiles" id="planTiles" role="radiogroup" aria-label="Plan"></div>
+    <div class="nav"><span></span><button class="btn btn-ink" id="planNext" disabled>Next</button></div>
+  </section>
+
+  <section class="step" data-step="food">
+    <h2>What are we eating?</h2>
+    <p class="sub">Choose wisely. This is basically a compatibility test.</p>
+    <div class="tiles" id="foodTiles" role="radiogroup" aria-label="Food"></div>
+    <p class="q">Also, settle this: Kolkata biryani or Donne biryani?</p>
+    <div class="chips" id="verdictChips" role="radiogroup" aria-label="Biryani verdict"></div>
+    <div class="nav">
+      <button class="link" data-back="plan">Back</button>
+      <button class="btn btn-ink" id="foodNext" disabled>Next</button>
+    </div>
+  </section>
+
+  <section class="step" data-step="when">
+    <h2>When are you free?</h2>
+    <p class="sub">Pick a slot. I'll clear my calendar and my emotional baggage.</p>
+    <div id="nameWrap" hidden>
+      <label class="f" for="nameIn">What should I call you?</label>
+      <input type="text" id="nameIn" placeholder="Your name" maxlength="40" autocomplete="given-name">
+    </div>
+    <label class="f" for="dateIn">Date</label>
+    <input type="date" id="dateIn">
+    <label class="f">Time</label>
+    <div class="chips" id="timeChips" role="radiogroup" aria-label="Time"></div>
+    <label class="f" for="timeIn">Or an exact time</label>
+    <input type="time" id="timeIn">
+    <div class="nav">
+      <button class="link" data-back="food">Back</button>
+      <button class="btn btn-ink" id="whenNext" disabled>Next</button>
+    </div>
+  </section>
+
+  <section class="step" data-step="ticket">
+    <h2>Here's your ticket.</h2>
+    <p class="sub" id="ticketSub">Check it, then confirm.</p>
+    <div class="ticket">
+      <div class="head"><strong>Howrah ⇄ Majestic Express</strong><small>No delays. Mostly.</small></div>
+      <dl class="body">
+        <div><dt>Passenger</dt><dd id="tName"></dd></div>
+        <div><dt>Travelling with</dt><dd id="tSender"></dd></div>
+        <div class="wide"><dt>Plan</dt><dd id="tPlan"></dd></div>
+        <div class="wide"><dt>Food</dt><dd id="tFood"></dd></div>
+        <div><dt>Date</dt><dd id="tDate"></dd></div>
+        <div><dt>Time</dt><dd id="tTime"></dd></div>
+        <div class="wide"><dt>Biryani verdict</dt><dd id="tVerdict"></dd></div>
+      </dl>
+      <div class="tear"></div>
+      <div class="stub">
+        <span>PNR <b id="tPnr"></b></span>
+        <span>Class: Main character</span>
+        <span>Times you tried No: <strong id="tNo"></strong></span>
+      </div>
+    </div>
+    <div class="error" id="err" role="alert"></div>
+    <div class="nav">
+      <button class="link" data-back="when">Back</button>
+      <button class="btn btn-rose" id="sendBtn">Confirm my ticket</button>
+    </div>
+  </section>
+
+  <section class="step" data-step="done" style="text-align:center">
+    <h2>Ticket confirmed.</h2>
+    <p class="sub" id="doneLine" style="margin-left:auto;margin-right:auto"></p>
+    <p style="margin:18px auto 0">Fun fact: Kolkata and Bengaluru agree on exactly one thing. Traffic is a personality trait.</p>
+  </section>
+</main>
+
+<div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-labelledby="qTitle">
+  <div class="card dialog">
+    <h2 id="qTitle">Will you go on a date with me?</h2>
+    <p class="sub">Healed. Hydrated. Asking you out.</p>
+    <div class="choices">
+      <button class="btn btn-rose" id="yesBtn">Yes</button>
+      <button class="btn" id="noBtn">No</button>
+    </div>
+    <p class="fine">The No button is broken on purpose. A real no works fine over text, DM or email.</p>
+  </div>
+</div>
+
+<div class="toast" id="toast" aria-live="polite"></div>
+
+<script>
+/* ======================= SETTINGS ======================= */
+const CONFIG = {
+  sender: "Sap",
+  web3formsKey: "3a4f00a5-6b23-476d-ac08-30204f427f1d"
+};
+/* ======================================================== */
+
+const PLANS = [
+  {e:"🍹", t:"Indiranagar, 12th Main hopping", d:"A café, a rooftop, a long walk. Zero rush."},
+  {e:"🍜", t:"Koramangala food crawl", d:"We eat until one of us taps out."},
+  {e:"🏍️", t:"Sunrise ride to Nandi Hills", d:"Brutal alarm, unreal view. Worth it."},
+  {e:"☕", t:"Filter coffee and Cubbon Park", d:"Slow morning, soft launch energy."},
+  {e:"📚", t:"Church Street books and Koshy's", d:"Get lost in Blossom, get found at Koshy's."},
+  {e:"🎤", t:"Comedy show or open mic", d:"If it's bad, we bond over it."},
+  {e:"🎲", t:"Board game café", d:"Green flag if you lose gracefully."},
+  {e:"🍺", t:"Craft beer and a sunset", d:"Bengaluru's official love language."},
+  {e:"🛋️", t:"Couch, biryani and a comfort show", d:"Stay in. Rewatch. Zero judgement."},
+  {e:"✨", t:"Surprise me", d:"You bring the vibe, I bring the plan."}
+];
+
+const FOODS = [
+  {e:"🥔", t:"Kolkata biryani", d:"With the aloo. Non negotiable."},
+  {e:"🍛", t:"Donne biryani", d:"Bengaluru's answer. Spicy debate incoming."},
+  {e:"🥞", t:"Benne dosa and filter coffee", d:"Butter first, questions later."},
+  {e:"🐟", t:"Bengali thali", d:"Luchi, kosha mangsho, mishti doi to finish."},
+  {e:"🥟", t:"Momos and Chinese", d:"Tangra style, if we can find it here."},
+  {e:"🥙", t:"Puchka or pani puri", d:"Same thing, different name. Fight me."},
+  {e:"🍜", t:"Ramen or Korean", d:"For the K drama era."},
+  {e:"🍕", t:"Pizza and pasta", d:"Safe choice. Still a great choice."},
+  {e:"🍮", t:"Dessert first", d:"Rosogolla, mishti doi, then we decide."}
+];
+
+const VERDICTS = ["Kolkata, with the aloo", "Donne, obviously", "Need a taste test first"];
+
+const TIMES = [
+  {l:"Sunrise, 5:30 AM", v:"05:30"},
+  {l:"Brunch, 11:30 AM", v:"11:30"},
+  {l:"Chai time, 5 PM", v:"17:00"},
+  {l:"Sunset, 6:30 PM", v:"18:30"},
+  {l:"Dinner, 8 PM", v:"20:00"}
+];
+
+const NO_LINES = [
+  "Nope. That button is giving red flag.",
+  "Error 404: No not found.",
+  "The No button has left the chat.",
+  "Respectfully, that's a skill issue.",
+  "Not the ick. Please not the ick.",
+  "Kolkata said yes. Bengaluru said yes. It's 2 v 1.",
+  "Silk Board traffic moves faster than this decision.",
+  "No cap, that button is decorative.",
+  "I've survived worse. Like Outer Ring Road at 6 PM.",
+  "It's giving main character. Choose accordingly.",
+  "The Yes button is literally growing. Take the hint."
+];
+
+const state = {plan:null, food:null, verdict:null, date:"", time:"", name:"", noTries:0};
+const $ = s => document.querySelector(s);
+const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+/* Name comes from the link: /letsdate/?for=Riya */
+const forName = (new URLSearchParams(location.search).get("for") || "").trim().slice(0, 40);
+if (forName){
+  $("#hello").textContent = `${forName}, I'm shooting my shot.`;
+  document.title = `${forName}, I'm shooting my shot`;
+  state.name = forName;
+} else {
+  $("#nameWrap").hidden = false; // safety net if the link has no name
+}
+$("#tSender").textContent = CONFIG.sender;
+$("#ticketSub").textContent = `Check it, then confirm. It goes straight to ${CONFIG.sender}.`;
+$("#err").textContent = `That didn't send. Check your internet and try again, or screenshot this ticket and send it to ${CONFIG.sender}.`;
+
+/* ---------- helpers ---------- */
+let toastTimer;
+function toast(msg){
+  const t = $("#toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove("show"), 2600);
+}
+
+function rain(emojis, count = 26){
+  if (reduceMotion) return;
+  for (let i = 0; i < count; i++){
+    const s = document.createElement("span");
+    s.className = "rain";
+    s.textContent = emojis[i % emojis.length];
+    s.style.left = Math.random() * 100 + "vw";
+    s.style.animationDuration = (2.2 + Math.random() * 2) + "s";
+    s.style.animationDelay = (Math.random() * .8) + "s";
+    document.body.appendChild(s);
+    setTimeout(() => s.remove(), 5200);
+  }
+}
+
+const ORDER = ["plan","food","when","ticket"];
+function go(step){
+  document.querySelectorAll(".step").forEach(s => s.classList.toggle("active", s.dataset.step === step));
+  $("#hero").hidden = !(step === "intro" || step === "done");
+  const track = $("#track");
+  track.hidden = !ORDER.includes(step);
+  const idx = ORDER.indexOf(step);
+  track.querySelectorAll("li").forEach((li, i) => {
+    li.classList.toggle("done", i < idx);
+    li.classList.toggle("current", i === idx);
+  });
+  if (step === "ticket") fillTicket();
+  window.scrollTo({top:0, behavior: reduceMotion ? "auto" : "smooth"});
+}
+
+function tiles(container, items, key, onPick){
+  items.forEach(it => {
+    const b = document.createElement("button");
+    b.className = "tile"; b.type = "button";
+    b.setAttribute("aria-pressed", "false");
+    b.innerHTML = `<span class="e" aria-hidden="true">${it.e}</span><span><b>${it.t}</b><span class="d">${it.d}</span></span>`;
+    b.addEventListener("click", () => {
+      container.querySelectorAll(".tile").forEach(x => x.setAttribute("aria-pressed", "false"));
+      b.setAttribute("aria-pressed", "true");
+      state[key] = it.t;
+      onPick();
+    });
+    container.appendChild(b);
+  });
+}
+
+function chips(container, items, onPick){
+  items.forEach(it => {
+    const b = document.createElement("button");
+    b.className = "chip"; b.type = "button";
+    b.setAttribute("aria-pressed", "false");
+    b.textContent = it.l;
+    b.addEventListener("click", () => {
+      container.querySelectorAll(".chip").forEach(x => x.setAttribute("aria-pressed", "false"));
+      b.setAttribute("aria-pressed", "true");
+      onPick(it);
+    });
+    container.appendChild(b);
+  });
+}
+
+function fmtDate(iso){
+  if (!iso) return "";
+  return new Date(iso + "T00:00").toLocaleDateString("en-IN", {weekday:"short", day:"numeric", month:"short", year:"numeric"});
+}
+function fmtTime(hhmm){
+  if (!hhmm) return "";
+  let [h, m] = hhmm.split(":").map(Number);
+  const ap = h >= 12 ? "PM" : "AM";
+  h = h % 12 || 12;
+  return `${h}:${String(m).padStart(2,"0")} ${ap}`;
+}
+
+/* ---------- the question ---------- */
+const overlay = $("#overlay"), yesBtn = $("#yesBtn"), noBtn = $("#noBtn");
+$("#askBtn").addEventListener("click", () => { overlay.classList.add("open"); yesBtn.focus(); });
+
+let lastDodge = 0;
+function dodge(e){
+  if (e) e.preventDefault();
+  const now = Date.now();
+  if (now - lastDodge < 250) return;
+  lastDodge = now;
+
+  state.noTries++;
+  toast(NO_LINES[(state.noTries - 1) % NO_LINES.length]);
+
+  if (noBtn.parentElement !== document.body){
+    const r = noBtn.getBoundingClientRect();
+    document.body.appendChild(noBtn);
+    noBtn.style.position = "fixed";
+    noBtn.style.left = r.left + "px";
+    noBtn.style.top = r.top + "px";
+  }
+
+  const pad = 16, w = noBtn.offsetWidth, h = noBtn.offsetHeight;
+  const hits = (r, x, y) => x < r.right + 12 && x + w > r.left - 12 && y < r.bottom + 12 && y + h > r.top - 12;
+  const dr = document.querySelector(".dialog").getBoundingClientRect();
+  const yr = yesBtn.getBoundingClientRect();
+  let x, y, tries = 0;
+  do {
+    x = pad + Math.random() * Math.max(1, window.innerWidth - w - pad * 2);
+    y = pad + 70 + Math.random() * Math.max(1, window.innerHeight - h - pad * 2 - 70);
+    tries++;
+  } while (tries < 60 && (tries < 40 ? hits(dr, x, y) : hits(yr, x, y)));
+
+  requestAnimationFrame(() => { noBtn.style.left = x + "px"; noBtn.style.top = y + "px"; });
+  yesBtn.style.transform = `scale(${Math.min(1 + state.noTries * 0.12, 1.9)})`;
+  noBtn.style.transform = `scale(${Math.max(1 - state.noTries * 0.06, 0.6)})`;
+}
+
+noBtn.addEventListener("pointerenter", e => { if (e.pointerType === "mouse") dodge(); });
+noBtn.addEventListener("pointerdown", dodge);
+noBtn.addEventListener("click", e => { e.preventDefault(); if (e.detail === 0) dodge(); });
+
+yesBtn.addEventListener("click", () => {
+  overlay.classList.remove("open");
+  noBtn.remove();
+  $("#toast").classList.remove("show");
+  rain(["❤️","🚕","🛺","☕","✨"]);
+  toast("Correct answer. Healing era unlocked.");
+  go("plan");
+});
+
+/* ---------- plan and food ---------- */
+tiles($("#planTiles"), PLANS, "plan", () => $("#planNext").disabled = false);
+$("#planNext").addEventListener("click", () => go("food"));
+
+tiles($("#foodTiles"), FOODS, "food", () => $("#foodNext").disabled = false);
+chips($("#verdictChips"), VERDICTS.map(v => ({l:v})), it => state.verdict = it.l);
+$("#foodNext").addEventListener("click", () => go("when"));
+
+/* ---------- when ---------- */
+const dateIn = $("#dateIn"), timeIn = $("#timeIn"), nameIn = $("#nameIn");
+(() => {
+  const d = new Date();
+  d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
+  dateIn.min = d.toISOString().slice(0, 10);
+})();
+
+function checkWhen(){ $("#whenNext").disabled = !(state.date && state.time && state.name); }
+nameIn.addEventListener("input", () => { state.name = nameIn.value.trim(); checkWhen(); });
+dateIn.addEventListener("change", () => { state.date = dateIn.value; checkWhen(); });
+chips($("#timeChips"), TIMES, it => { state.time = it.v; timeIn.value = ""; checkWhen(); });
+timeIn.addEventListener("input", () => {
+  state.time = timeIn.value;
+  $("#timeChips").querySelectorAll(".chip").forEach(x => x.setAttribute("aria-pressed", "false"));
+  checkWhen();
+});
+$("#whenNext").addEventListener("click", () => go("ticket"));
+
+document.querySelectorAll("[data-back]").forEach(b => b.addEventListener("click", () => go(b.dataset.back)));
+
+/* ---------- ticket and send ---------- */
+const pnr = "HM" + Math.floor(100000 + Math.random() * 900000);
+function fillTicket(){
+  $("#tName").textContent = state.name;
+  $("#tPlan").textContent = state.plan;
+  $("#tFood").textContent = state.food;
+  $("#tDate").textContent = fmtDate(state.date);
+  $("#tTime").textContent = fmtTime(state.time);
+  $("#tVerdict").textContent = state.verdict || "Declined to comment";
+  $("#tPnr").textContent = pnr;
+  $("#tNo").textContent = state.noTries;
+}
+
+$("#sendBtn").addEventListener("click", async () => {
+  const btn = $("#sendBtn"), err = $("#err");
+  err.classList.remove("show");
+  btn.disabled = true;
+  btn.textContent = "Sending...";
+
+  const payload = {
+    access_key: CONFIG.web3formsKey,
+    subject: `${state.name} said yes 🎉 ${state.plan}`,
+    from_name: "Lets date",
+    "Name": state.name,
+    "Plan": state.plan,
+    "Food": state.food,
+    "Biryani verdict": state.verdict || "Declined to comment",
+    "Date": fmtDate(state.date),
+    "Time": fmtTime(state.time),
+    "Times they tried No": state.noTries,
+    "Name came from": forName ? "The link" : "Typed on the page",
+    "PNR": pnr,
+    "Sent at": new Date().toLocaleString("en-IN", {timeZone:"Asia/Kolkata"})
+  };
+
+  try {
+    const res = await fetch("https://api.web3forms.com/submit", {
+      method: "POST",
+      headers: {"Content-Type":"application/json", "Accept":"application/json"},
+      body: JSON.stringify(payload)
+    });
+    const data = await res.json();
+    if (!data.success) throw new Error(data.message || "Send failed");
+    $("#doneLine").textContent = `${CONFIG.sender} has the details. See you on ${fmtDate(state.date)} at ${fmtTime(state.time)}.`;
+    go("done");
+    rain(["🚕","🛺","☕","🍛","❤️","✨"], 40);
+  } catch (e) {
+    console.error(e);
+    err.classList.add("show");
+    btn.disabled = false;
+    btn.textContent = "Try again";
+  }
+});
+</script>
+</body>
+</html>
