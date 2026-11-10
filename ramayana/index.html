@@ -220,7 +220,14 @@ body.hi .mk .lbl{font-family:var(--hidisplay);font-weight:400}
 .about ul{margin:8px 0 0 18px}
 .about li{margin:4px 0}
 .credit{text-align:center;margin-top:28px;color:var(--gold2);font-size:14px}
-.credit a{text-decoration:none}
+.credit b{color:var(--parch)}
+.connect{text-align:center;margin-top:14px;font-size:14px;color:var(--parch2)}
+.connect .links{display:flex;justify-content:center;gap:10px;margin-top:8px;flex-wrap:wrap}
+.connect a{display:inline-flex;align-items:center;gap:7px;padding:9px 16px;border:1px solid var(--gold);border-radius:999px;color:var(--gold2);text-decoration:none}
+.connect svg{width:16px;height:16px}
+.visits{display:none;margin:0 auto 18px;font-size:14px;color:var(--parch2);border:1px solid #d6a43c66;border-radius:999px;padding:6px 14px;width:max-content;max-width:100%;background:#2a050855}
+.visits.on{display:block;opacity:0;animation:rise 1s 1.1s forwards}
+.visits b{color:var(--gold2);font-family:var(--display)}
 .om{display:block;text-align:center;font-family:var(--hidisplay);color:var(--gold);font-size:22px;margin-top:18px}
 
 @media (min-width:900px){
@@ -265,6 +272,7 @@ body.hi .mk .lbl{font-family:var(--hidisplay);font-weight:400}
       <div class="stat"><b id="statKm"></b><span data-t="statKm"></span></div>
       <div class="stat"><b>2</b><span data-t="statCountries"></span></div>
     </div>
+    <div class="visits" id="visits"></div>
     <div class="cta">
       <button class="btn btn-primary" id="begin">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
@@ -317,7 +325,14 @@ body.hi .mk .lbl{font-family:var(--hidisplay);font-weight:400}
     <p data-t="about1"></p>
     <p data-t="about2"></p>
     <ul id="sources"></ul>
-    <div class="credit"><span data-t="credit"></span> <a href="https://www.instagram.com/https_sap/" target="_blank" rel="noopener">@https_sap</a></div>
+    <div class="credit"><span data-t="credit"></span></div>
+    <div class="connect">
+      <span data-t="connect"></span>
+      <div class="links">
+        <a href="https://www.instagram.com/https_sap/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>@https_sap</a>
+        <a href="https://www.linkedin.com/in/saptarshics/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9h4v12H3zM9 9h3.8v1.7h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.6c0-1.34-.03-3.06-1.86-3.06-1.87 0-2.15 1.46-2.15 2.96V21H9z"/></svg>LinkedIn</a>
+      </div>
+    </div>
     <span class="om">॥ जय श्री राम ॥</span>
   </div>
 </section>
@@ -752,7 +767,8 @@ const I18N = {
     about1: "The story follows the Valmiki Ramayana. Most places are traditional identifications held by temples, local communities and the state Ram Van Gaman Path projects, and scholars debate many of them. When a well known moment comes from a later retelling such as Tulsidas's Ramcharitmanas, the card says so.",
     about2: "Pins are approximate and spaced apart so they are easy to tap. Distances are straight lines between stops, so the real walk was longer. India's boundary follows the Survey of India.",
     sources: ["Valmiki Ramayana: Ayodhya, Aranya, Kishkindha, Sundara and Yuddha Kanda", "Ram Van Gaman Path projects of Uttar Pradesh, Madhya Pradesh and Chhattisgarh", "Sri Lanka Tourism's Ramayana Trail", "Temple and local traditions at each site"],
-    credit: "Made with devotion by",
+    credit: "Made with devotion by <b>Saptarshi Mondal</b>", connect: "Connect with me",
+    visits: (n) => `<b>${n}</b> visits so far`,
     shareText: (n) => `I just walked Ram's 14 year exile, Ayodhya to Lanka and back, on one map.${n ? ` I've been to ${n} of the 27 places.` : ""} Try it:`,
     copied: "Link copied", here: "Ayodhya",
     sea: { arabian: "ARABIAN SEA", bay: "BAY OF BENGAL", ocean: "INDIAN OCEAN" },
@@ -786,7 +802,8 @@ const I18N = {
     about1: "कथा वाल्मीकि रामायण के अनुसार है। अधिकतर स्थान मंदिरों, स्थानीय समुदायों और राज्यों की राम वन गमन पथ परियोजनाओं द्वारा माने गए पारंपरिक स्थल हैं, और विद्वानों में इनमें से कई पर मतभेद है। जब कोई प्रसिद्ध प्रसंग तुलसीदास के रामचरितमानस जैसी बाद की कथा से आता है, तो कार्ड पर यह लिखा है।",
     about2: "पिन अनुमानित हैं और टैप करने में आसानी के लिए थोड़े दूर दूर रखे गए हैं। दूरियाँ पड़ावों के बीच सीधी रेखा में हैं, असली पैदल यात्रा इससे लंबी रही होगी। भारत की सीमा भारतीय सर्वेक्षण विभाग के अनुसार है।",
     sources: ["वाल्मीकि रामायण: अयोध्या, अरण्य, किष्किंधा, सुंदर और युद्ध कांड", "उत्तर प्रदेश, मध्य प्रदेश और छत्तीसगढ़ की राम वन गमन पथ परियोजनाएँ", "श्रीलंका पर्यटन का रामायण ट्रेल", "हर स्थल की मंदिर और लोक परंपराएँ"],
-    credit: "श्रद्धा सहित,",
+    credit: "श्रद्धा सहित, <b>सप्तर्षि मंडल</b> द्वारा निर्मित", connect: "मुझसे जुड़ें",
+    visits: (n) => `अब तक <b>${n}</b> बार देखा गया`,
     shareText: (n) => `मैंने अभी एक नक्शे पर राम के चौदह वर्ष के वनवास की पूरी यात्रा देखी, अयोध्या से लंका और वापस।${n ? ` इन 27 में से ${n} स्थलों के मैंने दर्शन किए हैं।` : ""} आप भी देखिए:`,
     copied: "लिंक कॉपी हो गया", here: "अयोध्या",
     sea: { arabian: "अरब सागर", bay: "बंगाल की खाड़ी", ocean: "हिंद महासागर" },
@@ -1213,7 +1230,8 @@ $("#shareTop").onclick = () => share(T().shareText(S.visited.size));
 function applyLang() {
   const t = T();
   document.documentElement.lang = S.lang; document.body.classList.toggle("hi", S.lang === "hi");
-  document.querySelectorAll("[data-t]").forEach((e) => { const v = t[e.dataset.t]; if (typeof v === "string") e.textContent = v; });
+  document.querySelectorAll("[data-t]").forEach((e) => { const v = t[e.dataset.t]; if (typeof v === "string") { if (e.dataset.t === "credit") e.innerHTML = v; else e.textContent = v; } });
+  renderVisits();
   document.querySelectorAll(".lang button").forEach((b) => b.classList.toggle("on", b.dataset.lang === S.lang));
   $("#statStops").textContent = STOPS.length; $("#statKm").textContent = "~" + fmtKm(TOTAL_KM);
   $("#sources").innerHTML = t.sources.map((x) => `<li>${esc(x)}</li>`).join("");
@@ -1263,6 +1281,17 @@ document.querySelectorAll("#legend .chip").forEach((c) => (c.onclick = () => { c
 $("#begin").onclick = () => { $("#mapsec").scrollIntoView({ behavior: reduce ? "auto" : "smooth" }); setTimeout(() => { S.playing = true; updatePlayBtn(); goTo(0, false); }, reduce ? 50 : 650); };
 $("#explore").onclick = () => $("#mapsec").scrollIntoView({ behavior: reduce ? "auto" : "smooth" });
 
+/* ---------- real visit count (GoatCounter), shown only once it is meaningful ---------- */
+let VISITS = null;
+function renderVisits() { const v = $("#visits"); if (!v || VISITS == null) return; v.innerHTML = T().visits(VISITS.toLocaleString("en-IN")); v.classList.add("on"); }
+(function loadVisits() {
+  if (!/thesaptarshi\.com$/.test(location.hostname)) return;
+  fetch("https://thesaptarshi.goatcounter.com/counter/" + encodeURIComponent(location.pathname) + ".json")
+    .then((r) => (r.ok ? r.json() : null))
+    .then((j) => { if (!j) return; const n = parseInt(String(j.count).replace(/[^0-9]/g, ""), 10); if (n >= 300) { VISITS = n; renderVisits(); } })
+    .catch(() => {});
+})();
+
 /* ---------- start ---------- */
 let introDone = false;
 function intro() {
@@ -1284,5 +1313,6 @@ vb = boxFor(ROUTE_BOX); applyVB(); refreshMarkers();
 const h0 = decodeURIComponent(location.hash.slice(1));
 if (h0 && byId[h0] != null) { setTimeout(() => { $("#mapsec").scrollIntoView(); introDone = true; goTo(byId[h0], false); }, 300); }
 </script>
+<script data-goatcounter="https://thesaptarshi.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </body>
 </html>
